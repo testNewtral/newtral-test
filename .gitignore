@@ -1,1 +1,3 @@
 csv_and_dump
+__pycache__
+*.pyc
