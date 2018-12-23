@@ -49,10 +49,6 @@ def create_politician(data):
         data.get('CCAA'),
         data.get('CARGO_PARA_FILTRO'),
         data.get('PARTIDO_PARA_FILTRO'),
-
-        # data.get('TRIENIOS_SUELDO'),
-        # data.get('COMPLEMENTOS_SUELDO'),
-
     ))
 
     if res.data and res.data.get('success'):

@@ -63,19 +63,3 @@ def load_data(data_file):
             import_errors = add_errors(import_errors, errors)
 
     return import_errors
-
-
-# row.get('TITULAR'),
-# row.get('PARTIDO'),
-# row.get('PARTIDO_PARA_FILTRO'),
-# row.get('CARGO_PARA_FILTRO'),
-# row.get('CARGO'),
-# row.get('INSTITUCION'),
-# row.get('SUELDOBASE_SUELDO'),
-# row.get('COMPLEMENTOS_SUELDO'),
-# row.get('PAGASEXTRA_SUELDO'),
-# row.get('OTRASDIETASEINDEMNIZACIONES_SUELDO'),
-# row.get('TRIENIOS_SUELDO'),
-# row.get('RETRIBUCIONMENSUAL'),
-# row.get('RETRIBUCIONANUAL'),
-# row.get('OBSERVACIONES')
