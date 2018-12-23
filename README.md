@@ -9,3 +9,8 @@ docker run \
     --volume=$HOME/neo4j/logs:/logs \
     neo4j:3.4
 ```
+
+Run server
+----------
+
+`python runserver.py`
