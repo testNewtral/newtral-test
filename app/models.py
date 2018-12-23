@@ -13,7 +13,10 @@ graph = Graph(
 
 
 class BaseModel(GraphObject):
+    __primarykey__ = "name"
+
     def __init__(self, **kwargs):
+
         for key, value in kwargs.items():
             if hasattr(self, key):
                 setattr(self, key, value)
@@ -25,11 +28,18 @@ class BaseModel(GraphObject):
     def save(self):
         graph.push(self)
 
+    def fetch(self, name):
+        return self.match(graph, name).first()
+
+    @staticmethod
+    def delete_all():
+        graph.delete_all()
+
 
 class Region(BaseModel):
     name = Property()
 
-    political_parties = RelatedTo('PoliticalParty', 'CCAA')  # BELONGS
+    politicians = RelatedTo('Politician', 'GENERO')  # BELONGS
 
     def as_dict(self):
         return {
@@ -71,15 +81,33 @@ class PoliticalParty(BaseModel):
 
 
 class Politician(BaseModel):
-    anual = Property()
-    position = Property()
-    from_region = Property()
-    allowance = Property()
-    institution = Property()
-    monthly_income = Property()
     name = Property()
-    kind = Property()
+    institution = Property()
+
+    anual_income = Property()
+    monthly_income = Property()
     income = Property()
+    allowance = Property()
+    extra_income = Property()
+
+    notes = Property()
+
+    # position = Property()
+    # from_region = Property()
+
+    # anual: 60171,30
+    # cargo: Alcalde
+    # cargo_filtro: Alcalde
+    # ccaa: Canarias
+    # dietas: 0,00
+    # genero: Hombre
+    # institucion: Ayuntamiento de LAS PALMAS DE GRAN CANARIA
+    # mensual: 4297,95
+    # nombre: Augusto Hidalgo Macario
+    # observa: Dedicación Exclusiva
+    # partido: PSOE
+    # partido_filtro: PSOE
+    # sueldo_base: 60171,30
 
     # anual: 250,00
     # cargo: Alcalde

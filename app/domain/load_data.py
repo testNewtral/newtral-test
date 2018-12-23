@@ -1,12 +1,19 @@
 import csv
 
 from app.domain.db_queries import (
-    # create_politician,
+    create_politician,
     create_region,
     create_gender,
     create_political_office,
     create_political_party,
 )
+
+
+def add_errors(import_errors, errors):
+    for error in errors:
+        import_errors.append(error.message)
+
+    return import_errors
 
 
 def load_data(data_file):
@@ -21,6 +28,8 @@ def load_data(data_file):
     political_offices = set()
     political_parties = set()
 
+    import_errors = []
+
     for row in reader:
         politicians.append(row)
         regions.add(row.get('CCAA'))
@@ -29,19 +38,31 @@ def load_data(data_file):
         political_parties.add(row.get('PARTIDO_PARA_FILTRO'))
 
     for region in regions:
-        create_region(region)
+        errors = create_region(region)
+        if errors:
+            import_errors = add_errors(import_errors, errors)
 
     for gender in genders:
-        create_gender(gender)
+        errors = create_gender(gender)
+        if errors:
+            import_errors = add_errors(import_errors, errors)
 
     for political_office in political_offices:
-        create_political_office(political_office)
+        errors = create_political_office(political_office)
+        if errors:
+            import_errors = add_errors(import_errors, errors)
 
     for political_party in political_parties:
-        create_political_party(political_party)
+        errors = create_political_party(political_party)
+        if errors:
+            import_errors = add_errors(import_errors, errors)
 
-    # for politician in politicians:
-    #     create_politician()
+    for politician in politicians:
+        errors = create_politician(politician)
+        if errors:
+            import_errors = add_errors(import_errors, errors)
+
+    return import_errors
 
 
 # row.get('TITULAR'),
