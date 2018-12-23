@@ -31,6 +31,9 @@ class BaseModel(GraphObject):
     def fetch(self, name):
         return self.match(graph, name).first()
 
+    def fetch_by_id(self, obj_id):
+        return self.match(graph).where('ID(_) = {}'.format(obj_id)).first()
+
     @staticmethod
     def delete_all():
         graph.delete_all()
@@ -39,7 +42,7 @@ class BaseModel(GraphObject):
 class Region(BaseModel):
     name = Property()
 
-    politicians = RelatedTo('Politician', 'GENERO')  # BELONGS
+    politicians = RelatedTo('Politician', 'CCAA')  # BELONGS
 
     def as_dict(self):
         return {
@@ -81,6 +84,8 @@ class PoliticalParty(BaseModel):
 
 
 class Politician(BaseModel):
+    FK_ATTRS = ['region', 'gender', 'political_office', 'political_party']
+
     name = Property()
     institution = Property()
 
@@ -113,32 +118,15 @@ class Politician(BaseModel):
             'political_office': self.political_office,
         }
 
-    # position = Property()
-    # from_region = Property()
+    def remove_relationship(self, relationship):
+        possible_relationships = ['CCAA', 'GENERO', 'PARTIDO', 'CARGO']
 
-    # anual: 60171,30
-    # cargo: Alcalde
-    # cargo_filtro: Alcalde
-    # ccaa: Canarias
-    # dietas: 0,00
-    # genero: Hombre
-    # institucion: Ayuntamiento de LAS PALMAS DE GRAN CANARIA
-    # mensual: 4297,95
-    # nombre: Augusto Hidalgo Macario
-    # observa: Dedicación Exclusiva
-    # partido: PSOE
-    # partido_filtro: PSOE
-    # sueldo_base: 60171,30
+        if relationship not in possible_relationships:
+            return
 
-    # anual: 250,00
-    # cargo: Alcalde
-    # cargo_filtro: Alcalde
-    # ccaa: Canarias
-    # dietas: 250,00
-    # institucion: Ayuntamiento de LAS PALMAS DE GRAN CANARIA
-    # mensual: 4297,95
-    # nombre: Augusto Hidalgo Macario
-    # observa: Dedicación Exclusiva
-    # partido: PSOE
-    # partido_filtro: PSOE
-    # sueldo_base: 60171,30
+        query = '''
+            MATCH (n{{name:"{}"}})-[r:GENERO]-()
+            DELETE r
+        '''.format(self.name)
+
+        return graph.run(query).data()

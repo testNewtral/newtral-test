@@ -1,14 +1,13 @@
 from flask import Flask, jsonify
 
-from app.views import import_file, index, create
+from app.views import import_file, politician
 
 
 def create_app():
     app = Flask(__name__)
 
     app.register_blueprint(import_file)
-    app.register_blueprint(index)
-    app.register_blueprint(create)
+    app.register_blueprint(politician)
 
     @app.errorhandler(404)
     def page_not_found(e):

@@ -5,11 +5,10 @@ from flask import Blueprint, jsonify, request
 from app.domain.load_data import load_data
 from app.domain.retrieve_data import get_politicians
 from app.domain.create_data import create_politician
-
+from app.domain.update_data import update_politician
 
 import_file = Blueprint('import_file', __name__)
-index = Blueprint('get_politicians', __name__)
-create = Blueprint('create_politician', __name__)
+politician = Blueprint('politician', __name__)
 
 
 @import_file.route('/import', methods=['POST'])
@@ -28,13 +27,25 @@ def import_file_view():
     return jsonify({'import': 'ok'})
 
 
-@index.route('/index', methods=['GET'])
+@politician.route('/index', methods=['GET'])
 def get_politicians_view():
     politicians = get_politicians(50)
     return jsonify(politicians)
 
 
-@create.route('/create', methods=['POST'])
+@politician.route('/create', methods=['POST'])
 def create_politician_view():
-    politician = create_politician(request.form.to_dict())
-    return jsonify(politician.as_dict())
+    try:
+        politician = create_politician(request.form.to_dict())
+        return jsonify(politician.as_dict())
+    except Exception:
+        return jsonify({'error': 'Error in input data'}), 400
+
+
+@politician.route('/update/<politician_id>', methods=['PUT'])
+def update_politician_view(politician_id):
+    try:
+        politician = update_politician(politician_id, request.form.to_dict())
+        return jsonify(politician.as_dict())
+    except Exception as e:
+        return jsonify({'error': 'Error in input data'}), 400
