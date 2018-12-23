@@ -28,6 +28,10 @@ def create_politician(data):
                     allowance,
                     extra_income,
                     notes,
+                    gender,
+                    region,
+                    political_office,
+                    political_party,
                 }},
                 success
             }}

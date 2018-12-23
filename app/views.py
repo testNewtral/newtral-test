@@ -3,9 +3,11 @@ from io import StringIO
 from flask import Blueprint, jsonify, request
 
 from app.domain.load_data import load_data
+from app.domain.retrieve_data import get_politicians
 
 
-import_file = Blueprint('import_filehome', __name__)
+import_file = Blueprint('import_file', __name__)
+index = Blueprint('get_politicians', __name__)
 
 
 @import_file.route('/import', methods=['POST'])
@@ -23,21 +25,8 @@ def import_file_view():
 
     return jsonify({'import': 'ok'})
 
-    # res = schema.execute('''
-    #     mutation {
-    #         create_politician(name:"Peter", kind:"JUAS") {
-    #             politician {
-    #                 anual,
-    #                 position,
-    #                 from_region,
-    #                 allowance,
-    #                 institution,
-    #                 monthly_income,
-    #                 name,
-    #                 kind,
-    #                 income,
-    #             },
-    #             success
-    #         }
-    #     }
-    # ''')
+
+@index.route('/index', methods=['GET'])
+def get_politicians_view():
+    politicians = get_politicians(50)
+    return jsonify(politicians)

@@ -12,6 +12,10 @@ class PoliticianSchema(graphene.ObjectType):
     allowance = graphene.Float()
     extra_income = graphene.Float()
     notes = graphene.String()
+    region = graphene.String()
+    gender = graphene.String()
+    political_party = graphene.String()
+    political_office = graphene.String()
 
 
 class GenderSchema(graphene.ObjectType):

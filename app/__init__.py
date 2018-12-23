@@ -1,12 +1,13 @@
 from flask import Flask, jsonify
 
-from app.views import import_file
+from app.views import import_file, index
 
 
 def create_app():
     app = Flask(__name__)
 
     app.register_blueprint(import_file)
+    app.register_blueprint(index)
 
     @app.errorhandler(404)
     def page_not_found(e):

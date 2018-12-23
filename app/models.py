@@ -22,8 +22,8 @@ class BaseModel(GraphObject):
                 setattr(self, key, value)
 
     @property
-    def all(self):
-        return self.select(graph)
+    def all(self, limit=None):
+        return self.match(graph)
 
     def save(self):
         graph.push(self)
@@ -91,6 +91,27 @@ class Politician(BaseModel):
     extra_income = Property()
 
     notes = Property()
+
+    region = Property()
+    gender = Property()
+    political_office = Property()
+    political_party = Property()
+
+    def as_dict(self):
+        return {
+            'name': self.name,
+            'institution': self.institution,
+            'anual_income': self.anual_income,
+            'monthly_income': self.monthly_income,
+            'income': self.income,
+            'allowance': self.allowance,
+            'extra_income': self.extra_income,
+            'notes': self.notes,
+            'region': self.region,
+            'gender': self.gender,
+            'political_party': self.political_party,
+            'political_office': self.political_office,
+        }
 
     # position = Property()
     # from_region = Property()
