@@ -4,10 +4,12 @@ from flask import Blueprint, jsonify, request
 
 from app.domain.load_data import load_data
 from app.domain.retrieve_data import get_politicians
+from app.domain.create_data import create_politician
 
 
 import_file = Blueprint('import_file', __name__)
 index = Blueprint('get_politicians', __name__)
+create = Blueprint('create_politician', __name__)
 
 
 @import_file.route('/import', methods=['POST'])
@@ -30,3 +32,9 @@ def import_file_view():
 def get_politicians_view():
     politicians = get_politicians(50)
     return jsonify(politicians)
+
+
+@create.route('/create', methods=['POST'])
+def create_politician_view():
+    politician = create_politician(request.form.to_dict())
+    return jsonify(politician.as_dict())

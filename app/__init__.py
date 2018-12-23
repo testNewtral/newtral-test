@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 
-from app.views import import_file, index
+from app.views import import_file, index, create
 
 
 def create_app():
@@ -8,6 +8,7 @@ def create_app():
 
     app.register_blueprint(import_file)
     app.register_blueprint(index)
+    app.register_blueprint(create)
 
     @app.errorhandler(404)
     def page_not_found(e):

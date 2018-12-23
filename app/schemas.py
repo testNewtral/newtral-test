@@ -1,6 +1,7 @@
 import graphene
 
 from app.models import Politician, Gender, PoliticalOffice, PoliticalParty, Region
+from app.domain.create_data import create_politician
 
 
 class PoliticianSchema(graphene.ObjectType):
@@ -61,25 +62,7 @@ class CreatePolitician(graphene.Mutation):
     politician = graphene.Field(lambda: PoliticianSchema)
 
     def mutate(self, info, **kwargs):
-        politician = Politician(**kwargs)
-
-        gender = Gender().fetch(kwargs.get('gender'))
-        region = Region().fetch(kwargs.get('region'))
-        political_office = PoliticalOffice().fetch(kwargs.get('political_office'))
-        political_party = PoliticalParty().fetch(kwargs.get('political_party'))
-
-        gender.politicians.add(politician)
-        region.politicians.add(politician)
-        political_office.politicians.add(politician)
-        political_party.politicians.add(politician)
-
-        politician.save()
-
-        gender.save()
-        region.save()
-        political_office.save()
-        political_party.save()
-
+        politician = create_politician(kwargs)
         return CreatePolitician(politician=politician, success=True)
 
 
